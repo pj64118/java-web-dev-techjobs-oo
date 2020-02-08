@@ -1,60 +1,71 @@
 package org.launchcode.techjobs_oo.Tests;
 
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import org.launchcode.techjobs_oo.CoreCompetency;
 import org.launchcode.techjobs_oo.Location;
 import org.launchcode.techjobs_oo.Employer;
 import org.launchcode.techjobs_oo.Job;
+import org.launchcode.techjobs_oo.PositionType;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.launchcode.techjobs_oo.PositionType;
 
 
 public class JobTest {
 
+    static Job emptyJob1;
+    static Job emptyJob2;
+    static Job populatedJob1;
+    static Job populatedJob2;
+    static Job partiallyPopulatedJob1;
+    static Job partiallyPopulatedJob2;
+
+    @BeforeClass
+    public static void createTestJobObjects() {
+        emptyJob1 = new Job();
+        emptyJob2 = new Job();
+        populatedJob1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        populatedJob2 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        partiallyPopulatedJob1 = new Job("Product tester", new Employer("ACME"), new Location(""), new PositionType(""), new CoreCompetency(""));
+        partiallyPopulatedJob2 = new Job("", new Employer(""), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+    }
+
     @Test
     public void testSettingJobId() {
-        Job job1 = new Job();
-        Job job2 = new Job();
-        assertEquals(job1.getId(), (job2.getId() - 1), 0);
+        assertEquals(emptyJob1.getId(), (emptyJob2.getId() - 1), 0);
     }
 
     @Test()
     public void testJobConstructorSetsAllFields() {
-        Job job1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
-        assertEquals(job1.getName(), "Product tester");
-        assertEquals(job1.getEmployer().toString(), "ACME");
-        assertEquals(job1.getLocation().toString(), "Desert");
-        assertEquals(job1.getPositionType().toString(), "Quality control");
-        assertEquals(job1.getCoreCompetency().toString(), "Persistence");
-        assertTrue(job1.getEmployer() instanceof Employer);
-        assertTrue(job1.getLocation() instanceof Location);
-        assertTrue(job1.getPositionType() instanceof PositionType);
-        assertTrue(job1.getCoreCompetency() instanceof CoreCompetency);
-
+        assertEquals(populatedJob1.getName(), "Product tester");
+        assertEquals(populatedJob1.getEmployer().toString(), "ACME");
+        assertEquals(populatedJob1.getLocation().toString(), "Desert");
+        assertEquals(populatedJob1.getPositionType().toString(), "Quality control");
+        assertEquals(populatedJob1.getCoreCompetency().toString(), "Persistence");
+        assertTrue(populatedJob1.getEmployer() instanceof Employer);
+        assertTrue(populatedJob1.getLocation() instanceof Location);
+        assertTrue(populatedJob1.getPositionType() instanceof PositionType);
+        assertTrue(populatedJob1.getCoreCompetency() instanceof CoreCompetency);
     }
 
     @Test
     public void testJobsForEquality() {
-        Job job1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
-        Job job2 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
-        assertFalse(job1.equals(job2));
+        assertFalse(populatedJob1.equals(populatedJob2));
     }
 
     @Test
     public void test_toString_ReturnsSurroundingBlankLines() {
-        Job job1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
-        assertTrue(job1.toString().startsWith("\n"));
-        int index = job1.toString().length() - 1;
-        assertTrue(job1.toString().startsWith("\n",index) );
+        assertTrue(populatedJob1.toString().startsWith("\n"));
+        int index = populatedJob1.toString().length() - 1;
+        assertTrue(populatedJob1.toString().startsWith("\n",index) );
     }
 
     @Test
     public void test_toString_FieldsAreLabeledOnSeparateLines() {
-        Job job1 = new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
-        String returnedString = job1.toString();
+        String returnedString = populatedJob1.toString();
         String[] line = returnedString.split("\n");
         assertTrue(line[1].startsWith("ID: "));
         assertTrue(line[2].startsWith("Name: "));
@@ -66,8 +77,7 @@ public class JobTest {
 
     @Test
     public void test_toString_ReturnsProperlyPopulatedFields() {
-        Job job1 = new Job("Product tester", new Employer("ACME"), new Location(""), new PositionType(""), new CoreCompetency(""));
-        String returnedString = job1.toString();
+        String returnedString = partiallyPopulatedJob1.toString();
         String[] line = returnedString.split("\n");
         int dataPos = line[2].indexOf(": ") + 2;
         assertEquals("Product tester", line[2].substring(dataPos));
@@ -80,8 +90,7 @@ public class JobTest {
         dataPos = line[6].indexOf(": ") + 2;
         assertEquals("Data not available", line[6].substring(dataPos));
 
-        Job job2 = new Job("", new Employer(""), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
-        returnedString = job2.toString();
+        returnedString = partiallyPopulatedJob2.toString();
         line = returnedString.split("\n");
         dataPos = line[2].indexOf(": ") + 2;
         assertEquals("Data not available", line[2].substring(dataPos));
@@ -97,7 +106,6 @@ public class JobTest {
 
     @Test    //Bonus test
     public void test_toString_ReturnsJobDoesNotExistMessage() {
-        Job job1 = new Job("", new Employer(""), new Location(""), new PositionType(""), new CoreCompetency(""));
-        assertEquals("OOPS! This job does not seem to exist.", job1.toString());
+        assertEquals("OOPS! This job does not seem to exist.", emptyJob1.toString());
     }
 }

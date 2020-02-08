@@ -96,37 +96,37 @@ public class Job {
 
     @Override
     public String toString() {
-        if (name.isEmpty() && employer.toString().isEmpty() && location.toString().isEmpty() &&
-                positionType.toString().isEmpty() && coreCompetency.toString().isEmpty()) {
+        if ((name == null) && (employer == null) && (location == null) && (positionType == null) && (coreCompetency == null)) {
             return "OOPS! This job does not seem to exist.";
-        } else {
-            if (name.isEmpty()) {
-                name = "Data not available";
-            }
-            String employerValue = employer.toString();
-            if (employerValue.isEmpty()) {
-                employerValue = "Data not available";
-            }
-            String locationValue = location.toString();
-            if (locationValue.isEmpty()) {
-                locationValue = "Data not available";
-            }
-            String positionTypeValue = positionType.toString();
-            if (positionTypeValue.isEmpty()) {
-                positionTypeValue = "Data not available";
-            }
-            String coreCompetencyValue = coreCompetency.toString();
-            if (coreCompetencyValue.isEmpty()) {
-                coreCompetencyValue = "Data not available";
-            }
-            return "\n" +
-                    "ID: " + id + "\n" +
-                    "Name: " + name + "\n" +
-                    "Employer: " + employerValue + "\n" +
-                    "Location: " + locationValue + "\n" +
-                    "Position Type: " + positionTypeValue + "\n" +
-                    "Core Competency: " + coreCompetencyValue +
-                    "\n";
         }
+
+        if (name.isEmpty()) {
+            name = "Data not available";
+        }
+        String employerValue = employer.toString();
+        if (employerValue.isEmpty()) {
+            employerValue = "Data not available";
+        }
+        String locationValue = location.toString();
+        if (locationValue.isEmpty()) {
+            locationValue = "Data not available";
+        }
+        String positionTypeValue = positionType.toString();
+        if (positionTypeValue.isEmpty()) {
+            positionTypeValue = "Data not available";
+        }
+        String coreCompetencyValue = coreCompetency.toString();
+        if (coreCompetencyValue.isEmpty()) {
+            coreCompetencyValue = "Data not available";
+        }
+
+        return "\n" +
+               "ID: " + id + "\n" +
+               "Name: " + name + "\n" +
+               "Employer: " + employerValue + "\n" +
+               "Location: " + locationValue + "\n" +
+               "Position Type: " + positionTypeValue + "\n" +
+               "Core Competency: " + coreCompetencyValue +
+               "\n";
     }
 }
